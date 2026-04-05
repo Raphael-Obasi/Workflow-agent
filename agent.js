@@ -1,19 +1,18 @@
 import OpenAI from "openai";
 import { z } from "zod";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Define strict schema (VERY IMPORTANT)
-const EmailSchema = z.object({
-  name: z.string().nullable(),
-  company: z.string().nullable(),
-  intent: z.enum(["lead", "support", "complaint", "other"]),
-  summary: z.string(),
-});
-
 export async function processEmail(emailText) {
+  const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const EmailSchema = z.object({
+    name: z.string().nullable(),
+    company: z.string().nullable(),
+    intent: z.enum(["lead", "support", "complaint", "other"]),
+    summary: z.string(),
+  });
+
   const prompt = `
 Extract structured data from this email.
 
